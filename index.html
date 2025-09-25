@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Змейка — Cyberpunk</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="container">
+    <header id="hud">
+      <div class="left">
+        <div id="title">SNAKE<span class="sub"> — CyberPunk</span></div>
+      </div>
+
+      <div class="center" id="hud-center">
+        <div id="score-card" class="stat">
+          <div class="label">Score</div>
+          <div id="score" class="value">0</div>
+        </div>
+        <div id="best-card" class="stat">
+          <div class="label">Best</div>
+          <div id="best-score" class="value">0</div>
+        </div>
+        <div id="level-card" class="stat">
+          <div class="label">Level</div>
+          <div id="level" class="value">1</div>
+        </div>
+      </div>
+
+      <div class="right">
+        <button id="newgame" class="btn icon" aria-label="Рестарт" title="Рестарт">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="restartGrad" x1="0" x2="1">
+                <stop offset="0%" stop-color="#FDF500"/>
+                <stop offset="50%" stop-color="#FDF500"/>
+                <stop offset="100%" stop-color="#FDF500"/>
+              </linearGradient>
+            </defs>
+            <path d="M21 12a9 9 0 10-2.1 5.6" 
+                  stroke="url(#restartGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22.5 4v8h-7" 
+                  stroke="url(#restartGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button id="sound-toggle" class="btn icon" title="Звук вкл/выкл" aria-pressed="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="M5 9v6h4l5 5V4l-5 5H5z" stroke="#E455AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17 9 A3 3 0 0 1 17 15" stroke="#E455AE" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="game-wrap">
+      <div id="game" role="application" aria-label="Игровое поле Змейка">
+        <div class="grid-bg" role="grid" aria-label="Игровое поле">
+        </div>
+
+        </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
