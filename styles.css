@@ -7,12 +7,6 @@
   --color-cyan: #00ffff;
   --color-text-light: #e0e0e0;
 
-  /* НОВЫЕ ЦВЕТА ГОЛОВЫ */
-  --color-head-red: #e43a41;
-  --color-head-green: #3ae467;
-  --color-head-blue: #3a5ae4;
-  --color-head-yellow: #f8c92a;
-  
   /* Цвет для свечения хвоста */
   --color-tail-glow: var(--color-cyan);
 
@@ -25,8 +19,8 @@
   --neon-glow-magenta: 0 0 10px var(--color-magenta), 0 0 15px var(--color-magenta), 0 0 50px var(--color-magenta);
   
   /* Внешнее свечение */
-  --outer-glow-gold: 0 0 4px var(--color-gold), 0 0 8px var(--color-gold);
-  --outer-glow-magenta: 0 0 4px var(--color-magenta), 0 0 8px var(--color-magenta);
+  --neon-glow-gold: 0 0 10px var(--color-gold), 0 0 15px var(--color-gold), 0 0 50px var(--color-gold);
+  --neon-glow-magenta: 0 0 10px var(--color-magenta), 0 0 15px var(--color-magenta), 0 0 50px var(--color-magenta);
 
   /* Шрифты и отступы */
   --font-main: "Orbitron", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -162,6 +156,17 @@ html, body {
   box-shadow: 0 0px 5px var(--color-gold), inset 0 0 2px rgba(255, 247, 64, 0.45);
 }
 
+
+.btn.icon:active {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 1px;
+}
+
+#sound-toggle:active {
+  outline: 3px solid var(--color-magenta);
+  outline-offset: 1px;
+}
+
 #game-wrap {
   width: min(var(--max-game-w), 94vw);
   height: auto;
@@ -200,17 +205,22 @@ html, body {
 
 .cell {
   background: transparent;
-  border-radius: 12px;
+  /* УМЕНЬШЕН BORDER-RADIUS ДЛЯ БОЛЕЕ КВАДРАТНОГО ВИДА */
+  /* ИЗМЕНЕНИЕ ЗДЕСЬ: Был 6px, стал 2px */
+  border-radius: 2px; 
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 0 5px rgba(0, 255, 255, 0.1);
 }
+
 
 /* ================== Snake Game Elements (Плавность и Глоу) ================== */
 .tile {
   position: absolute !important; 
   left: 0; 
   top: 0; 
-  transition: transform 0.1s linear; 
+  /* УЛУЧШЕННАЯ ПЛАВНОСТЬ АНИМАЦИИ ЗМЕЙКИ */
+  /* Увеличено время transition для более мягкого и плавного движения. */
+  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Добавлена более плавная функция */
   will-change: transform;
   z-index: 1000;
 }
@@ -226,8 +236,8 @@ html, body {
 
 /* Анимация пульсации для еды */
 @keyframes pulse {
-  from { opacity: 1; filter: brightness(1.2); }
-  to { opacity: 0.8; filter: brightness(1); }
+  from { opacity: 1; filter: brightness(1.6);}
+  to { opacity: 0.8; filter: brightness(0.8);}
 }
 
 /* ================== Стили Оверлея (Unchanged) ================== */
@@ -251,11 +261,11 @@ html, body {
     pointer-events: auto;
 }
 #start-card {
-    border: 3px solid var(--color-cyan);
+    border: 3px solid var(--color-magenta);
     border-radius: 12px;
     padding: 30px 40px;
     text-align: center;
-    box-shadow: 0 0 40px var(--color-cyan), inset 0 0 10px var(--color-cyan);
+    box-shadow: var(--neon-glow-magenta);
 }
 
 /* Стили для "Game Over" состояния */
@@ -270,8 +280,7 @@ html, body {
 
 #start-card h2 {
     font-size: 28px;
-    color: var(--color-cyan);
-    text-shadow: 0 0 2px var(--color-cyan);
+    color: var(--color-magenta);
     margin-top: 0;
 }
 #start-card p {
@@ -284,10 +293,10 @@ html, body {
 
 @keyframes neon-pulse {
     from { opacity: 0.8; text-shadow: none; }
-    to { opacity: 1; text-shadow: 0 0 4px var(--color-cyan); }
+    to { opacity: 3; text-shadow: 0 0 4px var(--color-magenta); }
 }
 
-/* ... (Media queries unchanged) ... */
+/* ... (Media queries changes) ... */
 @media (max-width: 480px) {
   #container { justify-content: flex-start; }
   #hud { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 20px; }
@@ -298,10 +307,43 @@ html, body {
   .right { justify-content: space-between; width: 100%; flex-direction: row; }
   .btn.icon { width: 52px; height: 52px; }
   .grid-bg { gap: 8px; padding: 8px; }
-  .cell { border-radius: 5px; }
+  /* УМЕНЬШЕН BORDER-RADIUS ДЛЯ МОБИЛЬНЫХ */
+  .cell { border-radius: 3px; }
 }
 
 @media (min-width: 900px) {
   #hud .left #title { font-size: 22px; }
   .stat .value { font-size: 18px; }
+}
+
+/* ================== Эффект Data Burst (ФИНАЛЬНЫЙ ИСПРАВЛЕННЫЙ КОД) ================== */
+
+.data-burst {
+    position: absolute;
+   
+    border-radius: 2px;
+    opacity: 0;
+    z-index: 1005; /* Поверх всего */
+    pointer-events: none;
+    animation: burst-out 0.35s ease-out forwards;
+    filter: drop-shadow(0 0 8px var(--burst-color));
+}
+
+/* Анимация: быстрый рост и яркое свечение, которое исчезает. */
+@keyframes burst-out {
+    0% { 
+        transform: scale(0.1); 
+        opacity: 1; 
+        box-shadow: inset 0 0 1px var(--burst-color),0 0 10px var(--burst-color), 0 0 20px var(--burst-color); 
+    }
+    50% { 
+        transform: scale(1.25); 
+        opacity: 0.5; 
+        box-shadow: 0 0 40px var(--burst-color), 0 0 80px var(--burst-color); 
+    }
+    100% { 
+        transform: scale(2.5); 
+        opacity: 0.2; 
+        box-shadow: 0 0 50px var(--burst-color);
+    }
 }
